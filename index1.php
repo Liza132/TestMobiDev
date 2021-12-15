@@ -1,15 +1,14 @@
 <?php
 
 $xo = [
-    ['x', 'o', 'x'],
+    ['x', '', 'x'],
     ['', 'x', 'x'],
-    ['x', 'x', 'o']
+    ['x', 'o', '']
 ];
 
 
 function check($line)
 {
-
 
     for ($i = 0; $i < 3; $i++) {
         if ($line[$i][0] == $line[$i][1] && $line[$i][1] == $line[$i][2]) {
@@ -18,7 +17,9 @@ function check($line)
             return ($line[0][$i]);
         } else if ($line[0][0] == $line[1][1] && $line[1][1] == $line[2][2] || $line[0][2] == $line[1][1] && $line[1][1] == $line[2][0]) {
             return ($line[1][1]);
-        } else return '';
+        }
     }
+    return '';
 }
+
 echo check($xo);
