@@ -1,10 +1,9 @@
 <?php
 
-$number = 157455544;
+$number = 144234;
 
-$result = '';
 $symbol = 1;
-
+$result = [];
 $num = $number;
 if ($number < 20) {
     echo find($number, $symbol);
@@ -14,16 +13,19 @@ if ($number < 20) {
             $val = $num % 100;
             $num = (int)($num / 100);
             $number = $num;
-            $result = find($val, $symbol) . ' ' . $result;
+            $result[] = find($val, $symbol);
             $symbol = $symbol + 2;
         }
         $val = $num % 10;
         $num = (int)($num / 10);
-        $result = find($val, $symbol) . ' ' . $result;
+        $res = find($val, $symbol);
+        $result = array_merge($result, is_array($res) ? $res : [$res]);
         $symbol++;
+
     }
 }
-echo $result;
+echo implode(' ', array_reverse($result));
+
 
 function find($z, $symbol)
 {
@@ -39,38 +41,34 @@ function find($z, $symbol)
         8 => 'eight', 18 => 'eighteen', 90 => 'ninety',
         9 => 'nine', 19 => 'nineteen'
     );
-    $space = ' ';
+    $val_number = '';
     if ($symbol == 4) {
         $symbol = 1;
-        $res = $spelling[1000];
+        $val_number = $spelling[1000];
     }
     if ($symbol == 5 || $symbol == 8) {
         $symbol = 2;
-        $space = ' ';
     }
-    if ($symbol == 6 || $symbol == 9) {
+    if ($symbol == 6 || $symbol == 9 || $symbol == 3) {
         $symbol = 3;
-        $space = ' ';
+        $val_number = $spelling[100];
     }
     if ($symbol == 7) {
         $symbol = 1;
-        $space = ' ';
-        $res = $spelling[1000000];
+        $val_number = $spelling[1000000];
     }
 
-
-    $val_number = 1;
     if ($symbol == 1) {
-        return $spelling[$z] . $space . $res;
+        $res[] = $val_number;
+        $res[] = $spelling[$z];
     } else if ($symbol == 2) {
-        return $spelling[$z * 10];
+        $res[] = $spelling[$z * 10];
     } else {
-        for ($i = 1; $i < $symbol; $i++) {
-            $val_number = $val_number . '0';
-        }
-        $space = ' ';
-        $res = $spelling[$z] . $space . $spelling[$val_number] . $space . $res;
-        return $res;
+        $res[] = $val_number;
+        $res[] = $spelling[$z];
     }
+    return $res;
+
+
 
 }
